@@ -23,10 +23,13 @@
         }
 
         #selectionTable th.vertical-header {
-            writing-mode: vertical-rl;
-            transform: rotate(180deg);
             padding: 8px 2px;
             white-space: nowrap;
+        }
+
+        .rotate-headers #selectionTable th.vertical-header {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
         }
     </style>
 </head>
@@ -68,9 +71,21 @@
                 <option value="uniformityIndex">uniformityIndex</option>
             </select>
             <p>Selected fields:</p>
-            <ul id="selectionSummary"></ul>
             <button id="fetchBtn" type="button">Fetch Summary</button>
             <div id="errorMessage" style="color:red;"></div>
+            <p>Limiter</p>
+            <select onchange="rerender()" id="limit" class="mywidth">
+                <option value="0" selected>0 or more</option>
+                <option value="10">1 or more</option>
+                <option value="100">10 or more</option>
+                <option value="1000">1000 or more</option>
+                <option value="10000">10000 or more</option>
+            </select>
+            <label style="display:block; margin-top:10px;">
+                <input type="checkbox" id="rotateToggle">
+                Rotate column headers 90°
+            </label>
+
         </div>
 
         <table id="selectionTable" border="1" cellpadding="4" cellspacing="0">
@@ -79,6 +94,7 @@
             </thead>
             <tbody></tbody>
         </table>
+
     </div>
 
     <script src="/static/working.js"></script>
