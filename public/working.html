@@ -6,6 +6,10 @@
             width: 220px;
         }
 
+        #notesContainer {
+            margin-top: 10px;
+        }
+
         .layout {
             display: flex;
             gap: 20px;
@@ -85,6 +89,10 @@
                 <input type="checkbox" id="rotateToggle">
                 Rotate column headers 90°
             </label>
+            <label style="display:block; margin-top:10px;">
+                <input type="checkbox" id="notesToggle">
+                Show notes
+            </label>
 
         </div>
 
@@ -95,7 +103,16 @@
             <tbody></tbody>
         </table>
 
-    </div>
+        <div id="notesContainer" style="display:none;">
+            <textarea id="notes" rows="40" cols="50" placeholder="Add your notes here..."></textarea>
+            <hr/>
+            <button id="saveNotes1" onClick="saveNotes1()" type="button">Save 1</button>
+            <button id="saveNotes2" onClick="saveNotes2()" type="button">Save 2</button>
+            <button id="loadNotes1" onClick="loadNotes1()" type="button">Load 1</button>
+            <button id="loadNotes2" onClick="loadNotes2()" type="button">Load 2</button>
+        </div>
+
+</div>
 
     <script src="/static/working.js"></script>
 </body>

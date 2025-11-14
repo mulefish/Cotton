@@ -6,6 +6,9 @@ const fetchButton = document.getElementById('fetchBtn');
 const errorMessage = document.getElementById('errorMessage');
 const limitSelect = document.getElementById('limit');
 const rotateToggle = document.getElementById('rotateToggle');
+const notesToggle = document.getElementById('notesToggle');
+const notesContainer = document.getElementById('notesContainer');
+const notesTextarea = document.getElementById('notes');
 const selectedValues = new Set();
 let latestSummary = [];
 let latestFields = [];
@@ -219,4 +222,55 @@ if (rotateToggle) {
     });
     updateRotationSetting();
 }
+if (notesToggle && notesContainer) {
+    notesToggle.addEventListener('change', () => {
+        notesContainer.style.display = notesToggle.checked ? 'block' : 'none';
+    });
+    notesContainer.style.display = 'none';
+    notesToggle.checked = false;
+}
+
 renderSelectionSummary();
+
+function saveNotes1() {
+    persistNotes('save1');
+}
+
+function saveNotes2() {
+    persistNotes('save2');
+}
+
+function loadNotes1() {
+    loadNotes('save1');
+}
+
+function loadNotes2() {
+    loadNotes('save2');
+}
+
+function persistNotes(key) {
+    if (!notesTextarea) {
+        return;
+    }
+    try {
+        localStorage.setItem(key, notesTextarea.value);
+    } catch (err) {
+        errorMessage.textContent = `Unable to save notes (${err.message})`;
+    }
+}
+
+function loadNotes(key) {
+    if (!notesTextarea) {
+        return;
+    }
+    try {
+        const value = localStorage.getItem(key);
+        if (value !== null) {
+            notesTextarea.value = value;
+        } else {
+            notesTextarea.value = '';
+        }
+    } catch (err) {
+        errorMessage.textContent = `Unable to load notes (${err.message})`;
+    }
+}
