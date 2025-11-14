@@ -5,7 +5,6 @@ const tableHeadRow = document.getElementById('selectionHeaderRow');
 const fetchButton = document.getElementById('fetchBtn');
 const errorMessage = document.getElementById('errorMessage');
 const selectedValues = new Set();
-const defaultFields = ['colorGrade', 'leafGrade', 'stapleCode'];
 
 function updateSelection() {
     selectedValues.clear();
@@ -33,10 +32,12 @@ function renderTableHeader(fields) {
     fields.forEach(field => {
         const th = document.createElement('th');
         th.textContent = field;
+        th.classList.add('vertical-header');
         tableHeadRow.appendChild(th);
     });
     const countHeader = document.createElement('th');
     countHeader.textContent = 'count';
+    countHeader.classList.add('vertical-header');
     tableHeadRow.appendChild(countHeader);
 }
 
@@ -66,14 +67,18 @@ function renderResults(rows, fields) {
 }
 
 function currentFields() {
-    return selectedValues.size ? Array.from(selectedValues) : defaultFields;
+    return Array.from(selectedValues);
 }
 
 async function fetchData() {
     errorMessage.textContent = '';
-    const pendingFields = currentFields();
-    renderTableHeader(pendingFields);
-    renderResults([], pendingFields);
+    tableHeadRow.innerHTML = '';
+    tableBody.innerHTML = '';
+    const loadingRow = document.createElement('tr');
+    const loadingCell = document.createElement('td');
+    loadingCell.textContent = 'Loading...';
+    loadingRow.appendChild(loadingCell);
+    tableBody.appendChild(loadingRow);
 
     try {
         const response = await fetch('/api/summary', {
@@ -87,18 +92,23 @@ async function fetchData() {
         }
 
         const payload = await response.json();
-        const fields = (payload.requestedFields && payload.requestedFields.length)
-            ? payload.requestedFields
-            : defaultFields;
+        const fields = Array.isArray(payload.requestedFields)
+            ? payload.requestedFields.filter(Boolean)
+            : [];
+
+        if (!fields.length) {
+            throw new Error('Server did not return requested fields');
+        }
+
         renderTableHeader(fields);
         renderResults(payload.summary || [], fields);
     } catch (err) {
         errorMessage.textContent = `Error fetching data: ${err.message}`;
+        tableHeadRow.innerHTML = '';
+        tableBody.innerHTML = '';
     }
 }
 
 selectEl.addEventListener('change', updateSelection);
 fetchButton.addEventListener('click', fetchData);
 renderSelectionSummary();
-renderTableHeader(defaultFields);
-renderResults([], defaultFields);

@@ -15,6 +15,19 @@
         #selectionSummary {
             min-height: 40px;
         }
+
+        #selectionTable th {
+            text-align: center;
+            padding: 4px;
+            vertical-align: bottom;
+        }
+
+        #selectionTable th.vertical-header {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            padding: 8px 2px;
+            white-space: nowrap;
+        }
     </style>
 </head>
 
@@ -60,7 +73,7 @@
             <div id="errorMessage" style="color:red;"></div>
         </div>
 
-        <table id="selectionTable" border="1" cellpadding="4" cellspacing="0" style="table-layout:fixed; width:400px;">
+        <table id="selectionTable" border="1" cellpadding="4" cellspacing="0">
             <thead>
                 <tr id="selectionHeaderRow"></tr>
             </thead>
