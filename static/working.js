@@ -6,6 +6,7 @@ const fetchButton = document.getElementById('fetchBtn');
 const errorMessage = document.getElementById('errorMessage');
 const limitSelect = document.getElementById('limit');
 const rotateToggle = document.getElementById('rotateToggle');
+const highlightToggle = document.getElementById('highlightToggle');
 const notesToggle = document.getElementById('notesToggle');
 const notesContainer = document.getElementById('notesContainer');
 const notesTextarea = document.getElementById('notes');
@@ -82,17 +83,30 @@ function renderResults(rows, fields) {
         tableBody.appendChild(row);
         return;
     }
+    let previousRowValues = null;
     rows.forEach((rowData) => {
         const row = document.createElement('tr');
-        fields.forEach(field => {
+        const currentValues = [];
+        fields.forEach((field, index) => {
             const cell = document.createElement('td');
-            cell.textContent = rowData[field] ?? '';
+            const value = rowData[field] ?? '';
+            cell.textContent = value;
+            currentValues[index] = value;
+            if (
+                highlightToggleChecked() &&
+                previousRowValues &&
+                previousRowValues[index] !== value
+            ) {
+                cell.style.backgroundColor = 'yellow';
+            }
             row.appendChild(cell);
         });
         const countCell = document.createElement('td');
-        countCell.textContent = rowData.count ?? 0;
+        const countValue = rowData.count ?? 0;
+        countCell.textContent = countValue;
         row.appendChild(countCell);
         tableBody.appendChild(row);
+        previousRowValues = [...currentValues, countValue];
     });
 }
 
@@ -106,6 +120,10 @@ function currentCountThreshold() {
     }
     const value = Number(limitSelect.value);
     return Number.isFinite(value) ? value : 0;
+}
+
+function highlightToggleChecked() {
+    return highlightToggle ? highlightToggle.checked : true;
 }
 
 function rerender() {
@@ -221,6 +239,9 @@ if (rotateToggle) {
         }
     });
     updateRotationSetting();
+}
+if (highlightToggle) {
+    highlightToggle.addEventListener('change', rerender);
 }
 if (notesToggle && notesContainer) {
     notesToggle.addEventListener('change', () => {
