@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <style>
+        .mywidth {
+            width: 220px;
+        }
+
+        .layout {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        #selectionSummary {
+            min-height: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="layout">
+        <div>
+            <select id="selecter" size="30" multiple class="mywidth">
+                <option value="baggingCode">baggingCode</option>
+                <option value="classDate">classDate</option>
+                <option value="colorGrade">colorGrade</option>
+                <option value="colorQuadrant">colorQuadrant</option>
+                <option value="compressionCode">compressionCode</option>
+                <option value="compressionPaidFlag">compressionPaidFlag</option>
+                <option value="cropYear">cropYear</option>
+                <option value="electronicReceiptNumber">electronicReceiptNumber</option>
+                <option value="extraneousMatter">extraneousMatter</option>
+                <option value="fiberLengthCode">fiberLengthCode</option>
+                <option value="ginCode">ginCode</option>
+                <option value="ginTag">ginTag</option>
+                <option value="hviColor">hviColor</option>
+                <option value="hviPlusB">hviPlusB</option>
+                <option value="hviRd">hviRd</option>
+                <option value="issueDate">issueDate</option>
+                <option value="leafGrade">leafGrade</option>
+                <option value="loadingPaidFlag">loadingPaidFlag</option>
+                <option value="micronaire">micronaire</option>
+                <option value="netWeightLb">netWeightLb</option>
+                <option value="receivingPaidFlag">receivingPaidFlag</option>
+                <option value="remarks">remarks</option>
+                <option value="stapleCode">stapleCode</option>
+                <option value="storagePaidThrough">storagePaidThrough</option>
+                <option value="strength">strength</option>
+                <option value="tareWeightLb">tareWeightLb</option>
+                <option value="tieCode">tieCode</option>
+                <option value="trashPercent">trashPercent</option>
+                <option value="uniformityIndex">uniformityIndex</option>
+            </select>
+            <p>Selected fields:</p>
+            <ul id="selectionSummary"></ul>
+            <button id="fetchBtn" type="button">Fetch Summary</button>
+            <div id="errorMessage" style="color:red;"></div>
+        </div>
+
+        <table id="selectionTable" border="1" cellpadding="4" cellspacing="0" style="table-layout:fixed; width:400px;">
+            <thead>
+                <tr>
+                    <th>colorGrade</th>
+                    <th>leafGrade</th>
+                    <th>stapleCode</th>
+                    <th>count</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script src="/static/working.js"></script>
+</body>
+
+</html>
