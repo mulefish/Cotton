@@ -1,9 +1,11 @@
 const selectEl = document.getElementById('selecter');
 const selectionSummary = document.getElementById('selectionSummary');
 const tableBody = document.querySelector('#selectionTable tbody');
+const tableHeadRow = document.getElementById('selectionHeaderRow');
 const fetchButton = document.getElementById('fetchBtn');
 const errorMessage = document.getElementById('errorMessage');
 const selectedValues = new Set();
+const defaultFields = ['colorGrade', 'leafGrade', 'stapleCode'];
 
 function updateSelection() {
     selectedValues.clear();
@@ -26,31 +28,52 @@ function renderSelectionSummary() {
     });
 }
 
-function renderResults(rows) {
+function renderTableHeader(fields) {
+    tableHeadRow.innerHTML = '';
+    fields.forEach(field => {
+        const th = document.createElement('th');
+        th.textContent = field;
+        tableHeadRow.appendChild(th);
+    });
+    const countHeader = document.createElement('th');
+    countHeader.textContent = 'count';
+    tableHeadRow.appendChild(countHeader);
+}
+
+function renderResults(rows, fields) {
     tableBody.innerHTML = '';
     if (!rows.length) {
         const row = document.createElement('tr');
         const cell = document.createElement('td');
-        cell.colSpan = 4;
+        cell.colSpan = fields.length + 1;
         cell.textContent = 'No data';
         row.appendChild(cell);
         tableBody.appendChild(row);
         return;
     }
-    rows.forEach(({ colorGrade, leafGrade, stapleCode, count }) => {
+    rows.forEach((rowData) => {
         const row = document.createElement('tr');
-        [colorGrade, leafGrade, stapleCode, count].forEach(value => {
+        fields.forEach(field => {
             const cell = document.createElement('td');
-            cell.textContent = value ?? '';
+            cell.textContent = rowData[field] ?? '';
             row.appendChild(cell);
         });
+        const countCell = document.createElement('td');
+        countCell.textContent = rowData.count ?? 0;
+        row.appendChild(countCell);
         tableBody.appendChild(row);
     });
 }
 
+function currentFields() {
+    return selectedValues.size ? Array.from(selectedValues) : defaultFields;
+}
+
 async function fetchData() {
     errorMessage.textContent = '';
-    renderResults([]);
+    const pendingFields = currentFields();
+    renderTableHeader(pendingFields);
+    renderResults([], pendingFields);
 
     try {
         const response = await fetch('/api/summary', {
@@ -64,7 +87,11 @@ async function fetchData() {
         }
 
         const payload = await response.json();
-        renderResults(payload.summary || []);
+        const fields = (payload.requestedFields && payload.requestedFields.length)
+            ? payload.requestedFields
+            : defaultFields;
+        renderTableHeader(fields);
+        renderResults(payload.summary || [], fields);
     } catch (err) {
         errorMessage.textContent = `Error fetching data: ${err.message}`;
     }
@@ -73,3 +100,5 @@ async function fetchData() {
 selectEl.addEventListener('change', updateSelection);
 fetchButton.addEventListener('click', fetchData);
 renderSelectionSummary();
+renderTableHeader(defaultFields);
+renderResults([], defaultFields);
