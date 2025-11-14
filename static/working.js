@@ -10,6 +10,9 @@ const highlightToggle = document.getElementById('highlightToggle');
 const notesToggle = document.getElementById('notesToggle');
 const notesContainer = document.getElementById('notesContainer');
 const notesTextarea = document.getElementById('notes');
+const showModalBtn = document.getElementById('showModalBtn');
+const snippetModal = document.getElementById('snippetModal');
+const closeModalBtn = document.getElementById('closeModalBtn');
 const selectedValues = new Set();
 let latestSummary = [];
 let latestFields = [];
@@ -249,6 +252,21 @@ if (notesToggle && notesContainer) {
     });
     notesContainer.style.display = 'none';
     notesToggle.checked = false;
+}
+if (showModalBtn && snippetModal) {
+    showModalBtn.addEventListener('click', () => {
+        snippetModal.style.display = 'flex';
+    });
+}
+if (closeModalBtn && snippetModal) {
+    closeModalBtn.addEventListener('click', () => {
+        snippetModal.style.display = 'none';
+    });
+    snippetModal.addEventListener('click', (event) => {
+        if (event.target === snippetModal) {
+            snippetModal.style.display = 'none';
+        }
+    });
 }
 
 renderSelectionSummary();

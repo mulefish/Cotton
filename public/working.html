@@ -30,6 +30,38 @@
             padding: 8px 2px;
             white-space: nowrap;
         }
+        .modal {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .modal-content textarea {
+            width: 100%;
+            height: 300px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
 
         .rotate-headers #selectionTable th.vertical-header {
             writing-mode: vertical-rl;
@@ -97,6 +129,7 @@
                 <input type="checkbox" id="notesToggle">
                 Show notes
             </label>
+            <button id="showModalBtn" type="button" style="margin-top:10px;">View data2json_typed snippet</button>
 
         </div>
 
@@ -116,7 +149,102 @@
             <button id="loadNotes2" onClick="loadNotes2()" type="button">Load 2</button>
         </div>
 
-</div>
+    </div>
+
+    <div id="snippetModal" class="modal">
+        <div class="modal-content">
+            <h3>@data2json_typed.py (9-93)</h3>
+            <textarea readonly>
+@dataclass
+class HDRecord:
+    """Structured view of a single HD detail record."""
+
+    # Identifier-style fields are kept as strings (even if they contain digits).
+    # Measurement-oriented fields are stored as integers so math/analysis works naturally.
+    warehouseCode: Optional[str] = None
+    electronicReceiptNumber: Optional[str] = None
+    cropYear: Optional[str] = None
+    issueDate: Optional[str] = None 
+    tareWeightLb: Optional[int] = None
+    netWeightLb: Optional[int] = None
+    baggingCode: Optional[str] = None
+    tieCode: Optional[str] = None
+    compressionCode: Optional[str] = None
+    receivingPaidFlag: Optional[str] = None
+    loadingPaidFlag: Optional[str] = None
+    compressionPaidFlag: Optional[str] = None
+    ginCode: Optional[str] = None
+    ginTag: Optional[str] = None
+    storagePaidThrough: Optional[str] = None
+    classDate: Optional[str] = None
+    colorGrade: Optional[str] = None
+    stapleCode: Optional[str] = None
+    micronaire: Optional[int] = None
+    strength: Optional[int] = None
+    leafGrade: Optional[str] = None
+    extraneousMatter: Optional[str] = None
+    remarks: Optional[str] = None
+    hviColor: Optional[str] = None
+    colorQuadrant: Optional[str] = None
+    hviRd: Optional[int] = None
+    hviPlusB: Optional[int] = None
+    trashPercent: Optional[int] = None
+    fiberLengthCode: Optional[int] = None
+    uniformityIndex: Optional[int] = None
+
+    @staticmethod
+    def _to_int(value: str) -> Optional[int]:
+        """Convert a substring to an int, or return None if the field is blank."""
+        stripped = value.strip()
+        if not stripped:
+            return None
+        return int(stripped)
+
+    @staticmethod
+    def _to_str(value: str) -> Optional[str]:
+        """Normalize a substring to a trimmed string (or None if blank)."""
+        stripped = value.strip()
+        return stripped if stripped else None
+
+    FIELDS: ClassVar[List[Tuple[str, int, int, Callable[[str], Optional[object]]]]] = [
+        # (attribute name, start column, end column, converter)
+        ("warehouseCode", 2, 7, _to_str.__func__),
+        ("electronicReceiptNumber", 8, 14, _to_str.__func__),
+        ("cropYear", 15, 18, _to_str.__func__),
+        ("issueDate", 19, 26, _to_str.__func__),
+        ("tareWeightLb", 27, 28, _to_int.__func__),
+        ("netWeightLb", 29, 31, _to_int.__func__),
+        ("baggingCode", 32, 32, _to_str.__func__),
+        ("tieCode", 33, 33, _to_str.__func__),
+        ("compressionCode", 35, 35, _to_str.__func__),
+        ("receivingPaidFlag", 45, 45, _to_str.__func__),
+        ("loadingPaidFlag", 46, 46, _to_str.__func__),
+        ("compressionPaidFlag", 48, 48, _to_str.__func__),
+        ("ginCode", 63, 67, _to_str.__func__),
+        ("ginTag", 68, 74, _to_str.__func__),
+        ("storagePaidThrough", 75, 82, _to_str.__func__),
+        ("classDate", 273, 280, _to_str.__func__),
+        ("colorGrade", 289, 290, _to_str.__func__),
+        ("stapleCode", 291, 292, _to_str.__func__),
+        ("micronaire", 293, 294, _to_int.__func__),
+        ("strength", 295, 297, _to_int.__func__),
+        ("leafGrade", 299, 299, _to_str.__func__),
+        ("extraneousMatter", 300, 301, _to_str.__func__),
+        ("remarks", 302, 303, _to_str.__func__),
+        ("hviColor", 304, 305, _to_str.__func__),
+        ("colorQuadrant", 306, 306, _to_str.__func__),
+        ("hviRd", 307, 309, _to_int.__func__),
+        ("hviPlusB", 310, 312, _to_int.__func__),
+        ("trashPercent", 313, 314, _to_int.__func__),
+        ("fiberLengthCode", 315, 317, _to_int.__func__),
+        ("uniformityIndex", 318, 320, _to_int.__func__),
+    ]
+            </textarea>
+            <div class="modal-actions">
+                <button id="closeModalBtn" type="button">Close</button>
+            </div>
+        </div>
+    </div>
 
     <script src="/static/working.js"></script>
 </body>
