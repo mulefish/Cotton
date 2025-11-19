@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotton Futures Trading Game</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        .game-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .info-panel {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .info-panel h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.1em;
+        }
+        .info-panel .value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .player-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .player-card {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .player-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .player-card.farmer { border-color: #4CAF50; }
+        .player-card.mill { border-color: #2196F3; }
+        .player-card.speculator { border-color: #FF9800; }
+        .player-card.merchant { border-color: #9C27B0; }
+        .player-card h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .role-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: bold;
+            color: white;
+        }
+        .badge-farmer { background: #4CAF50; }
+        .badge-mill { background: #2196F3; }
+        .badge-speculator { background: #FF9800; }
+        .badge-merchant { background: #9C27B0; }
+        .player-stats {
+            margin: 15px 0;
+        }
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .stat-label {
+            color: #666;
+        }
+        .stat-value {
+            font-weight: bold;
+            color: #333;
+        }
+        .stat-value.positive { color: #4CAF50; }
+        .stat-value.negative { color: #f44336; }
+        .actions {
+            margin-top: 15px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px 5px 5px 0;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        button.danger {
+            background: #f44336;
+        }
+        button.danger:hover {
+            background: #da190b;
+        }
+        .market-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .market-section h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .futures-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+        }
+        .futures-table th,
+        .futures-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .futures-table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        .futures-table tr:hover {
+            background: #f5f5f5;
+        }
+        .price-up {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .price-down {
+            color: #f44336;
+            font-weight: bold;
+        }
+        .event-log {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+        .event-log .event {
+            margin: 5px 0;
+            padding: 5px;
+        }
+        .event-log .event.info { color: #4ec9b0; }
+        .event-log .event.warning { color: #ffa500; }
+        .event-log .event.error { color: #f48771; }
+        .event-log .event.success { color: #4ec9b0; }
+        .season-indicator {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .season-spring { background: #81c784; color: white; }
+        .season-summer { background: #ffb74d; color: white; }
+        .season-harvest { background: #ba68c8; color: white; }
+        .season-winter { background: #64b5f6; color: white; }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .close {
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #999;
+        }
+        .close:hover {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .game-controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .game-controls button {
+            padding: 15px 30px;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌾 Cotton Futures Trading Game</h1>
+        <p class="subtitle">Experience the world of commodity trading from field to futures market</p>
+
+        <div class="game-header">
+            <div class="info-panel">
+                <h3>Current Season</h3>
+                <div class="value" id="currentSeason">Loading...</div>
+            </div>
+            <div class="info-panel">
+                <h3>Spot Price (per lb)</h3>
+                <div class="value" id="spotPrice">$0.00</div>
+            </div>
+            <div class="info-panel">
+                <h3>Futures Price (per lb)</h3>
+                <div class="value" id="futuresPrice">$0.00</div>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <button onclick="startNewGame()">New Game</button>
+            <button onclick="nextTurn()">Next Turn</button>
+            <button onclick="showMarketModal()">View Futures Market</button>
+        </div>
+
+        <div class="player-section" id="playersSection">
+            <!-- Player cards will be populated by JavaScript -->
+        </div>
+
+        <div class="market-section">
+            <h2>📊 Futures Market</h2>
+            <table class="futures-table">
+                <thead>
+                    <tr>
+                        <th>Contract</th>
+                        <th>Price</th>
+                        <th>Open Interest</th>
+                        <th>Your Position</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="futuresTableBody">
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="event-log" id="eventLog">
+            <div class="event info">Game initialized. Select a role and start trading!</div>
+        </div>
+    </div>
+
+    <!-- Futures Trading Modal -->
+    <div id="tradeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Trade Futures Contract</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <form id="tradeForm" onsubmit="executeTrade(event)">
+                <div class="form-group">
+                    <label>Contract Month</label>
+                    <select id="contractMonth" required>
+                        <option value="">Select month...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Action</label>
+                    <select id="tradeAction" required>
+                        <option value="">Select action...</option>
+                        <option value="buy">Buy (Go Long)</option>
+                        <option value="sell">Sell (Go Short)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity (contracts)</label>
+                    <input type="number" id="tradeQuantity" min="1" value="1" required>
+                    <small>1 contract = 50,000 lbs of cotton</small>
+                </div>
+                <div class="form-group">
+                    <label>Price per lb</label>
+                    <input type="number" id="tradePrice" step="0.01" required>
+                    <small>Current market price will be suggested</small>
+                </div>
+                <button type="submit">Execute Trade</button>
+                <button type="button" onclick="closeModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/cotton-game.js"></script>
+</body>
+</html>
+

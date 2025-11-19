@@ -1,0 +1,103 @@
+{
+  "turn": 1,
+  "season": "Spring",
+  "spotPrice": 0.75,
+  "futuresPrice": 0.7575,
+  "supply": 1000000,
+  "demand": 950000,
+  "weatherEvent": null,
+  "players": [
+    {
+      "id": 1,
+      "name": "Farmer Joe",
+      "role": "farmer",
+      "cash": 49812.5,
+      "cotton": 0,
+      "futuresContracts": [
+        {
+          "contractId": "FUT-May",
+          "quantity": 1,
+          "entryPrice": 0.75
+        }
+      ],
+      "netWorth": 51312.5
+    },
+    {
+      "id": 2,
+      "name": "Textile Mill Co",
+      "role": "mill",
+      "cash": 100000.0,
+      "cotton": 0,
+      "futuresContracts": [],
+      "netWorth": 100000.0
+    },
+    {
+      "id": 3,
+      "name": "Trader Max",
+      "role": "speculator",
+      "cash": 74812.5,
+      "cotton": 0,
+      "futuresContracts": [
+        {
+          "contractId": "FUT-Mar",
+          "quantity": 1,
+          "entryPrice": 0.75
+        }
+      ],
+      "netWorth": 75562.5
+    },
+    {
+      "id": 4,
+      "name": "Cotton Merchant",
+      "role": "merchant",
+      "cash": 80000.0,
+      "cotton": 50000,
+      "futuresContracts": [],
+      "netWorth": 117500.0
+    }
+  ],
+  "futuresContracts": [
+    {
+      "id": "FUT-Jan",
+      "month": "Jan",
+      "price": 0.75,
+      "priceChange": 0.0,
+      "openInterest": 0
+    },
+    {
+      "id": "FUT-Mar",
+      "month": "Mar",
+      "price": 0.765,
+      "priceChange": 0.0,
+      "openInterest": 1
+    },
+    {
+      "id": "FUT-May",
+      "month": "May",
+      "price": 0.78,
+      "priceChange": 0.0,
+      "openInterest": 1
+    },
+    {
+      "id": "FUT-Jul",
+      "month": "Jul",
+      "price": 0.795,
+      "priceChange": 0.0,
+      "openInterest": 0
+    },
+    {
+      "id": "FUT-Sep",
+      "month": "Sep",
+      "price": 0.81,
+      "priceChange": 0.0,
+      "openInterest": 0
+    },
+    {
+      "id": "FUT-Nov",
+      "month": "Nov",
+      "price": 0.825,
+      "priceChange": 0.0,
+      "openInterest": 0
+    }
+  ]
+}
