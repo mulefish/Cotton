@@ -20,14 +20,6 @@
             min-height: 40px;
         }
 
-        #selecter option.numeric {
-            background-color: #c8e6c9; /* light green */
-        }
-
-        #selecter option.categorical {
-            background-color: #bbdefb; /* light blue */
-        }
-
         #selectionTable th {
             text-align: center;
             padding: 4px;
@@ -84,35 +76,35 @@
     <div class="layout">
         <div>
             <select id="selecter" size="30" multiple class="mywidth">
-                <option value="baggingCode" class="categorical">baggingCode</option>
-                <option value="classDate" class="categorical">classDate</option>
-                <option value="colorGrade" class="categorical" selected>colorGrade</option>
-                <option value="colorQuadrant" class="categorical">colorQuadrant</option>
-                <option value="compressionCode" class="categorical">compressionCode</option>
-                <option value="compressionPaidFlag" class="categorical">compressionPaidFlag</option>
-                <option value="cropYear" class="categorical">cropYear</option>
-                <option value="electronicReceiptNumber" class="categorical">electronicReceiptNumber</option>
-                <option value="extraneousMatter" class="categorical">extraneousMatter</option>
-                <option value="fiberLengthCode" class="numeric">fiberLengthCode</option>
-                <option value="ginCode" class="categorical">ginCode</option>
-                <option value="ginTag" class="categorical">ginTag</option>
-                <option value="hviColor" class="categorical">hviColor</option>
-                <option value="hviPlusB" class="numeric">hviPlusB</option>
-                <option value="hviRd" class="numeric">hviRd</option>
-                <option value="issueDate" class="categorical">issueDate</option>
-                <option value="leafGrade" class="categorical" selected>leafGrade</option>
-                <option value="loadingPaidFlag" class="categorical">loadingPaidFlag</option>
-                <option value="micronaire" class="numeric">micronaire</option>
-                <option value="netWeightLb" class="numeric">netWeightLb</option>
-                <option value="receivingPaidFlag" class="categorical">receivingPaidFlag</option>
-                <option value="remarks" class="categorical">remarks</option>
-                <option value="stapleCode" class="categorical" selected>stapleCode</option>
-                <option value="storagePaidThrough" class="categorical">storagePaidThrough</option>
-                <option value="strength" class="numeric">strength</option>
-                <option value="tareWeightLb" class="numeric">tareWeightLb</option>
-                <option value="tieCode" class="categorical">tieCode</option>
-                <option value="trashPercent" class="numeric">trashPercent</option>
-                <option value="uniformityIndex" class="numeric">uniformityIndex</option>
+                <option value="baggingCode">baggingCode</option>
+                <option value="classDate">classDate</option>
+                <option value="colorGrade">colorGrade</option>
+                <option value="colorQuadrant">colorQuadrant</option>
+                <option value="compressionCode">compressionCode</option>
+                <option value="compressionPaidFlag">compressionPaidFlag</option>
+                <option value="cropYear">cropYear</option>
+                <option value="electronicReceiptNumber">electronicReceiptNumber</option>
+                <option value="extraneousMatter">extraneousMatter</option>
+                <option value="fiberLengthCode">fiberLengthCode</option>
+                <option value="ginCode">ginCode</option>
+                <option value="ginTag">ginTag</option>
+                <option value="hviColor">hviColor</option>
+                <option value="hviPlusB">hviPlusB</option>
+                <option value="hviRd">hviRd</option>
+                <option value="issueDate">issueDate</option>
+                <option value="leafGrade">leafGrade</option>
+                <option value="loadingPaidFlag">loadingPaidFlag</option>
+                <option value="micronaire">micronaire</option>
+                <option value="netWeightLb">netWeightLb</option>
+                <option value="receivingPaidFlag">receivingPaidFlag</option>
+                <option value="remarks">remarks</option>
+                <option value="stapleCode">stapleCode</option>
+                <option value="storagePaidThrough">storagePaidThrough</option>
+                <option value="strength">strength</option>
+                <option value="tareWeightLb">tareWeightLb</option>
+                <option value="tieCode">tieCode</option>
+                <option value="trashPercent">trashPercent</option>
+                <option value="uniformityIndex">uniformityIndex</option>
             </select>
             <p>Selected fields:</p>
             <button id="fetchBtn" type="button">Fetch Summary</button>
@@ -141,35 +133,12 @@
 
         </div>
 
-        <div style="display: flex; gap: 20px; align-items: flex-start;">
-            <div style="flex: 1;">
-                <table id="selectionTable" border="1" cellpadding="4" cellspacing="0">
-                    <thead>
-                        <tr id="selectionHeaderRow"></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-            <div style="width: 400px; min-height: 600px; border: 1px solid #ddd; padding: 15px; background: #f9f9f9; border-radius: 8px;">
-                <h3 style="margin-top: 0;">Data Visualization</h3>
-                <div style="margin-bottom: 15px;">
-                    <label for="vizType" style="display: block; margin-bottom: 5px; font-weight: bold;">Chart Type:</label>
-                    <select id="vizType" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-                        <option value="none">-- Select Chart Type --</option>
-                        <option value="timeseries">Time Series (if date field selected)</option>
-                        <option value="barchart">Bar Chart</option>
-                        <option value="scatter">Scatter Plot</option>
-                        <option value="histogram">Histogram</option>
-                    </select>
-                </div>
-                <div id="vizContainer" style="width: 100%; height: 550px; border: 1px solid #ccc; background: white; position: relative;">
-                    <canvas id="vizCanvas" width="370" height="550"></canvas>
-                </div>
-                <div id="vizMessage" style="margin-top: 10px; color: #666; font-size: 0.9em; text-align: center;">
-                    Select fields and choose a chart type to visualize
-                </div>
-            </div>
-        </div>
+        <table id="selectionTable" border="1" cellpadding="4" cellspacing="0">
+            <thead>
+                <tr id="selectionHeaderRow"></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
 
         <div id="notesContainer" style="display:none;">
             <textarea id="notes" rows="40" cols="50" placeholder="Add your notes here..."></textarea>
